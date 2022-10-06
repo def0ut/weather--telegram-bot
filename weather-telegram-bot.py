@@ -5,26 +5,34 @@ from bs4 import BeautifulSoup
 
 from aiogram import types
 
-TOKEN = '5774810956:AAFByJTuX8WkeoIFv4fXj7yz0mhWGTPOusg'
+TOKEN = '5755775226:AAF0TWoZgN5PrkxSUcgX3AUOu2z-0737ZRA'
 bot = telebot.TeleBot(TOKEN)
 
 
 PC = '💾'
-HELLO = '🙋🏻‍♂️'
 
-CITIES = '\n'.join(['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань', 'Нижний Новгород', 'Челябинск', 'Красноярск', 'Уфа'])
+CITIES = ['1. Москва', '2. Санкт-Петербург', '3. Новосибирск', '4. Екатеринбург', '5. Казань',
+                    '6. Нижний Новгород', '7. Челябинск', '8. Красноярск', '9. Cамара', '10. Уфа']
+
+FORMAT_CITIES = f'.\n'.join(CITIES)
+
 
 @bot.message_handler(commands=['start'])
 
 def GET_START_INFORMATION(message):
+
     bot.send_message(message.chat.id, f'Привет, {message.from_user.first_name}. 🙋🏻‍♂\n\n'
                                       f'Я мини-функциональный БОТ, который показывает ПОГОДУ.\n'
-                                      f'На данный момент доступны города:\n\n{CITIES + "."}\n\n'
+                                      f'На данный момент доступны города:\n\n{FORMAT_CITIES + "."}'
+                                      f'\n\n'
                                       f'Чтобы продолжить напиши любой город из этого списка.')
+
 
 @bot.message_handler(content_types=['text'])
 
-def GET_WEATHER_MOSCOW(message):
+def GET_WEATHER_IN__CITIES(message):
+
+    # ПОГОДА В ГОРОДЕ - МОСКВА.
 
     if message.text.lower() == 'москва':
 
@@ -35,13 +43,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_MOSCOW = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_MOSCOW = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_MOSCOW = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                         f'Погода в городе Москва на сегодня:\n\n'
-                         f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_MOSCOW)[4:]}\n'
-                         f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_MOSCOW)[5:]}\n\n'
+            message.chat.id, f'☁️️️ Погода в городе Москва на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_MOSCOW)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_MOSCOW)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_MOSCOW)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - САНКТ ПЕТЕРБУРГ.
 
     elif message.text.lower() == 'санкт-петербург':
 
@@ -52,13 +62,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_SPB = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_SPB = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_SPB= ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Санкт-Петербург на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_SPB)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_SPB)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Санкт-Петербург на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_SPB)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_SPB)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_SPB)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - НОВОСИБИРСК.
 
     elif message.text.lower() == 'новосибирск':
 
@@ -69,13 +81,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_NOVOSIBIRSK = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_NOVOSIBIRSK = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_NOVOSIBIRSK = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Новосибирск на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_NOVOSIBIRSK)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_NOVOSIBIRSK)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Новосибирск на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_NOVOSIBIRSK)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_NOVOSIBIRSK)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_NOVOSIBIRSK)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - ЕКАТЕРИНБУРГ.
 
     elif message.text.lower() == 'екатеринбург':
 
@@ -86,13 +100,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_EKB = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_EKB = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_EKB = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Екатеринбург на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_EKB)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_EKB)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Екатеринбург на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_EKB)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_EKB)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_EKB)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - КАЗАНЬ.
 
     elif message.text.lower() == 'казань':
 
@@ -103,13 +119,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_KZN = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_KZN = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_KZN = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Казань на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_KZN)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_KZN)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Казань на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_KZN)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_KZN)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_KZN)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - НИЖНИЙ НОВГОРОД.
 
     elif message.text.lower() == 'нижний новгород':
 
@@ -120,13 +138,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_NN = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_NN = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_NN = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Нижний Новогород на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_NN)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_NN)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Нижний Новогород на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_NN)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_NN)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_NN)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - ЧЕЛЯБИНСК.
 
     elif message.text.lower() == 'челябинск':
 
@@ -137,13 +157,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_CB = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_CB = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_CB = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Челябинск на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_CB)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_CB)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Челябинск на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_CB)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_CB)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_CB)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - КРАСНОЯРСК.
 
     elif message.text.lower() == 'красноярск':
 
@@ -154,13 +176,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_KRN = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_KRN = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_KRN = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Красноярск на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_KRN)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_KRN)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Красноярск на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_KRN)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_KRN)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_KRN)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - САМАРА.
 
     elif message.text.lower() == 'самара':
 
@@ -171,13 +195,15 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_SM = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_SM = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_SM = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Самара на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_SM)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_SM)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Самара на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_SM)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_SM)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_SM)[:-1]}'
     )
+
+    # ПОГОДА В ГОРОДЕ - УФА.
 
     elif message.text.lower() == 'уфа':
 
@@ -188,12 +214,12 @@ def GET_WEATHER_MOSCOW(message):
         for ELEMENTS in html.select('#content'):
             MINIMUM_TEMPERATURE_IN_UFA = ELEMENTS.select('.min')[0].text
             MAXIMUM_TEMPERATURE_IN_UFA = ELEMENTS.select('.max')[0].text
-
+            CURRENT_TEMPERATURE_IN_UFA = ELEMENTS.find('p', class_='today-temp').string.strip()
         bot.send_message(
-            message.chat.id, f'Привет, {message.from_user.first_name}. {HELLO}\n'
-                             f'Погода в городе Уфа на сегодня:\n\n'
-                             f'Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_UFA)[4:]}\n'
-                             f'Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_UFA)[5:]}\n\n'
+            message.chat.id, f'☁️ Погода в городе Уфа на сегодня:\n\n'
+                             f'• Минимальная температура: {str(MINIMUM_TEMPERATURE_IN_UFA)[4:]}\n'
+                             f'• Максимальная температура: {str(MAXIMUM_TEMPERATURE_IN_UFA)[5:]}\n'
+                             f'• Текущая температура: {str(CURRENT_TEMPERATURE_IN_UFA)[:-1]}'
     )
 
 if __name__ == '__main__':
