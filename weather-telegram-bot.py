@@ -35,18 +35,20 @@ def GET_WEATHER_IN_CITIES(message):
     URL = f'https://sinoptik.ua/погода-{message.text.lower()}'
     r = requests.get(URL)
     HTML = BeautifulSoup(r.content, 'html.parser')
+    
     for ELEMENTS in HTML.select('#content'):
         MINIMAL_TEMP = ELEMENTS.select('.min')[0].text
         MAXIMUM_TEMP = ELEMENTS.select('.max')[0].text
         CURRENT_TEMP = ELEMENTS.find('p', {'class':'today-temp'}).string.strip()
 
         bot.send_message(
-            message.chat.id, f'''☁️ Погода в городе {("<b><u>" + message.text.upper() + "</u></b>")} на сегодня:\n\n'''
+            message.chat.id, f'''• Погода в городе {("<b>" + message.text.upper() + "</b>")} на сегодня:\n\n'''
                              f'''• Минимальная температура: {str(MINIMAL_TEMP)[4:]}\n'''
                              f'''• Максимальная температура: {str(MAXIMUM_TEMP)[5:]}\n'''
                              f'''• Текущая температура: {str(CURRENT_TEMP)[:-1]}''', 
                              
-                             parse_mode = "HTML"                             
+                             parse_mode = "HTML"
+
                         )
 
 if __name__ == '__main__':
